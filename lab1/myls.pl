@@ -38,8 +38,8 @@ foreach $entry(@entries)
     if ($printLong)
     {
         @s = stat($rootDir . "/" . $entry);
-        print sprintf("%-30s\t", $entry);
-        print $s[7] . "\t";
+        print sprintf("%-30s\t", substr($entry,0,30));
+        print sprintf("%10d\t", $s[7]);
         @time = localtime($s[10]);
         print sprintf("%d-%02d-%02d %02d:%02d:%02d", $time[5]+1900, $time[4], $time[3], $time[2], $time[1], $time[0]) . "\t";
         $mode = @s[2] & 0777;
