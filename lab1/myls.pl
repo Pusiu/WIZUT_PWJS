@@ -3,18 +3,18 @@
 use Cwd;
 
 $rootDir=cwd();
-$printLong=false;
-$printOwner=false;
+$printLong=0;
+$printOwner=0;
 
 for ($i=0; $i < scalar(@ARGV); $i++)
 {
     if ($ARGV[$i] eq '-l')
     {
-        $printLong=true;
+        $printLong=1;
     }
     elsif ($ARGV[$i] eq '-L')
     {
-        $printOwner=true;
+        $printOwner=1;
     }
     elsif (-d $ARGV[$i]) #check if it's a directory
     {
