@@ -1,20 +1,47 @@
 #!/usr/bin/perl
 
-start:
-print "Podaj nazwę pliku źródłowego: ";
-$filename = <STDIN>;
-#$filename = "WIPING5.html";
-chop $filename;
-unless (-e $filename)
+$usersFile = '';
+if ($ARGV[0] ne '')
 {
-    print "Podany plik nie istnieje\n";
-    goto start;
+    print STDERR "Określono plik z użytkownikami:  $ARGV[0]\n";
+    $usersFile = $ARGV[0];
 }
+
+if (-t STDIN and -t STDOUT and scalar(@ARGV) eq 0 )
+{
+    print "Użycie: ./parser.pl [opcjonalna nazwa pliku z użytkownikami] < [plik wejściowy] > [plik wyjściowy]\n";
+    exit;
+}
+
+if (-t STDIN)
+{
+    start:
+    print STDERR "Podaj nazwę pliku źródłowego: ";
+    $filename = <STDIN>;
+    #$filename = "WIPING5.html";
+    chop $filename;
+
+    if ($filename eq '' )
+    {
+        print STDERR "Należy podać odpowiedni plik na stdin\n";
+        goto start;
+    }
+
+    if (not -e $filename)
+    {
+        print STDERR "Podany plik $filename nie istnieje\n";
+        goto start;
+    }
+    open $file, "<", $filename;
+}
+else
+{
+    $file=STDIN;
+}
+
 
 @matches;
 %foundUsers;
-open $file, $filename;
-
 @titles;
 
 while(defined($line=<$file>))
@@ -42,13 +69,11 @@ for ($i=0; $i < scalar(@matches);$i+=3)
         $sm =~ s/-/0,0/;
         $sm = "\"$sm\",";
     }
-    #print "$matches[$i+1] ($matches[$i]): @submatches\n";
-
     $foundUsers{$matches[$i]}="\"$matches[$i+1]\",\"$matches[$i]\"," . join("",@submatches) . "\n";
-    #print $foundUsers{$matches[$i]};
 }
 
-open $output, '>', "output.csv";
+
+$output = *STDOUT;
 print {$output} '"Nazwa zawodnika","Nazwa konta",';
 foreach $t(@titles)
 {
@@ -56,18 +81,8 @@ foreach $t(@titles)
 }
 print {$output} '"SOL","SCORE"' . "\n";
 
-
-userFileLabel:
-print "Podaj nazwę pliku z listą użytkowników, lub wciśnij enter jeśli takiej nie ma: ";
-$usersFile = <STDIN>;
-chop $usersFile;
 if ($usersFile ne "")
 {
-    unless (-e $usersFile)
-    {
-        print "Podany plik nie istnieje\n";
-        goto userFileLabel;
-    }
     open $uf, $usersFile;
     while(defined($l=<$uf>))
     {
@@ -78,7 +93,7 @@ if ($usersFile ne "")
         }
         else
         {
-            print "Nie znaleziono $l\n";
+            print STDERR "Nie znaleziono $l\n";
         }
     }
     close ($uf);
@@ -90,6 +105,13 @@ else
         print {$output} $foundUsers{$u};
     }
 }
-
+if (-t STDOUT)
+{
+    print STDERR "\nZawartość została wypisana na ekran, ponieważ nie przekierowano wyjścia do pliku\n";
+}
+else
+{
+    print STDERR "Zawartość została wypisana do pliku\n";
+}
 close $output;
 close $file;
