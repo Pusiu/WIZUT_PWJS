@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+# Gracjan Puch
+# 41490
+# 31B
+# Zadanie na ocenę 5
+
+
 use Cwd;
 
 $rootDir=cwd();
