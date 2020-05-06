@@ -34,10 +34,7 @@ try:
         if (v == 0):
             continue
         p=round((v/letterSum)*100, 2);
-        psum+=p
         print(k + "\t\t" +  str(v) + "\t\t" + str(p) + " %\n")
-
-    print(str(psum))
 
 except FileNotFoundError:
     sys.stderr.write("Blad, nie znaleziono pliku\n")

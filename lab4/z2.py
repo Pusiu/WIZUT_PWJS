@@ -1,8 +1,17 @@
 #! /usr/bin/python3
+
+# Gracjan Puch
+# 41490
+# 31B
+# Zadanie na ocenę 5
+
+
+
 from collections import OrderedDict
 
 import sys;
 import string;
+
 
 frequencyMap = OrderedDict()
 frequencyDict = dict()
@@ -24,7 +33,7 @@ def Decipher(line):
     nl = ""
     for c in line:
         if (c in frequencyMap):
-            nl += frequencyMap[c]
+            nl += frequencyMap[c];
         else:
             nl += c
     return nl
@@ -49,9 +58,9 @@ try:
 
         file.seek(0)
         for line in file:
-            print(Decipher(line))
+            print(Decipher(line).encode('utf-8').decode(sys.stdout.encoding))
     
 
 
 except FileNotFoundError:
-    sys.stderr.write("Blad, nie znaleziono pliku\n")
+    sys.stderr.write("Blad, nie znaleziono pliku 'cipher.txt'\n")
