@@ -1,4 +1,11 @@
 #! /usr/bin/python3
+
+# Gracjan Puch
+# 41490
+# 31B
+# Zadanie na ocenę 5
+# Część 1
+
 import sys;
 import string;
 

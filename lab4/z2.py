@@ -4,7 +4,7 @@
 # 41490
 # 31B
 # Zadanie na ocenę 5
-
+# Część 2
 
 
 from collections import OrderedDict
